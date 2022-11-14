@@ -8,8 +8,25 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); 
   }
-function tickHandler(game){
-    game.tick()
+
+// the point will be given like  {x: 0, y: 0}
+// the rect will be given like {x:0, y:0, w:1, h:1}
+function checkColision(point, rect){
+    let {x, y} = point;
+    if(x >= rect.x && y >= rect.y && x <= rect.x + rect.w && y <= rect.y + rect.h)
+        return true;
+    return false;
+}
+function addScore(){
+    let score = parseInt(document.getElementById("score").innerText);
+    
+    score+=1;
+    document.getElementById("score").innerHTML = `${score}`;
+    let high_score = parseInt(document.getElementById("high-score").innerText);
+    if (score > high_score){
+        high_score = score;
+    }
+    document.getElementById("high-score").innerHTML = `${high_score}`;
 }
 
 export class Game{
@@ -51,6 +68,7 @@ export class Game{
             
             // this will check if the snake had eaten an apple
             if (snakeHead.x == food.x && snakeHead.y == food.y){
+                addScore();
                 snake.move(false);
                 this.food = new Food(this.ctx, getRandomInt(1, this.width/10 -1), getRandomInt(1, this.height/10 -1), 10, 10, "#D70040");
             }else if(this.snakeHeadCrashed()){ // check if the snake head crashed 
@@ -92,8 +110,20 @@ export class Game{
             }
         }
         // here we should check if the snake hit any on one of the game's rectangles
+        let colision = false;
+        for (var i = 0; i <map.rectangles.length; i++){
+            let rect = map.rectangles[i];
+            colision = checkColision(
+                {x:snakeHead.x, y:snakeHead.y},
+                rect
+                )
+            if (colision){
+                return true;
+            }
+        }
         return false;
     }
+
     timer(){
         var that = this;
         if(this.gameRunning){

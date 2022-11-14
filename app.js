@@ -41,6 +41,12 @@ document.getElementById("start-button").addEventListener("click", function(){
                     })
                 });
                 break;
+            case "level3":
+                game= new Game({
+                    ctx:context, 
+                    tick:100,
+                    map:Maps[0]
+                })
             default:
                 break;
         }
@@ -56,6 +62,30 @@ document.getElementById("reset-button").addEventListener("click", function(){
 document.getElementById("level-select").addEventListener("click", function(){
     // still no idea what to put here
 })
+
+var rectangles1 = [
+    {
+        x:3,
+        y:3,
+        w:10,
+        h:1
+    },
+    {
+        x:15,
+        y:3,
+        w:1,
+        h:10
+    }
+];
+
+var Maps =[
+    new Map({
+        ctx:context,
+        name:"Test",
+        rectangles:rectangles1,
+        border:true
+    })
+]
 
 var highScore = 0;
 var direct = "";

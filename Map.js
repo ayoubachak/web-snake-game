@@ -28,8 +28,7 @@ export class Map{
         for (let i=0; i<this.rectangles.length; i++) {
             let rect = this.rectangles[i];
             this.ctx.fillStyle = this.borderColor;
-            this.ctx.rect(rect.x*this.cellHeight, rect.y*this.cellHeight, rect.w * this.cellWidth, rect.h * this.cellHeight);
-            this.ctx.fill();
+            this.ctx.fillRect(rect.x*this.cellWidth, rect.y*this.cellHeight, rect.w * this.cellWidth, rect.h * this.cellHeight);
         }
         if(this.border){
             this.ctx.lineWidth = this.cellHeight;
@@ -39,16 +38,4 @@ export class Map{
         }
     }
 }
-var rectangles = [
-    {
-        x:3,
-        y:3,
-        w:3,
-        h:4
-    }
-];
 
-
-export var Maps =[
-
-]
