@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="settings">
+                <div class="setting">
+                    <label for="level-select">Choose a level</label>
+                    <select class="game-option" name="level-select" id="level-select">
+                        <option value="level1">Level 1</option>
+                    </select>
+                </div>
+                <div class="setting">
+                    <div class="start-button-container">
+                        <button id="start-button">Start</button>
+                    </div>
+                </div>
+                <div class="setting">
+                    <div class="stop-button-container">
+                        <button id="stop-button">Stop</button>
+                    </div>
+                </div>
+                <div class="setting">
+                    <div class="reset-button-container">
+                        <button id="reset-button">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="scores">
+                <div class="score">
+                    Your Score : <span id="score"></span>
+                </div>
+                <div class="score">
+                    High Score : <span id="high-score"></span>
+                </div>
+                <div class="score">
+                    Your Level : <span id="level"></span>
+                </div>
+                <div class="score">
+                    Time : <span id="time"></span>
+                </div>
+            </div>
+            <div class="gameframme">
+                <div class="gameframe-container">
+                    <canvas id="thegame" width="800" height="600"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
