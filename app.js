@@ -36,5 +36,5 @@ document.getElementById("stop-button").addEventListener("click", function(){
 
 var highScore = 0;
 var direct = "";
-var game = new Game({ctx:context, tick:10});
+var game = new Game({ctx:context, tick:100});
 console.log(game)
