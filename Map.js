@@ -3,8 +3,13 @@ export class Map{
         let { ctx, name, border , rectangles, borderColor, cellWidth, cellHeight, background} = args;
         this.name = name;
         this.ctx = ctx;
-        this.border = border?(border!=undefined):true;
+        // setting the border (I know this method is bad but hang with me)
+        this.border = true;
+        if(border!=undefined){
+            this.border = border;
+        }
         this.rectangles = rectangles?rectangles:[];
+        console.log("border is ", border!=undefined, border, this.border);
         this.borderColor = borderColor?borderColor:"#002026";
         this.backgroundColor = background?background:"#05D9FF";
         this.cellWidth = cellWidth?cellWidth:10;

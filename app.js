@@ -24,17 +24,43 @@ function direction(event){
     console.log(direct);
 }
 document.getElementById("start-button").addEventListener("click", function(){
-    game.start();
+    if(!game.gameRunning){
+        let level = document.getElementById("level-select").value
+        switch (level) {
+            case "level1":
+                game = new Game({ctx:context, tick:100});
+                break;
+            case "level2":
+                game = new Game({
+                    ctx:context, 
+                    tick:100,
+                    map:new Map({
+                        name:"Border",
+                        ctx:context, 
+                        border:true
+                    })
+                });
+                break;
+            default:
+                break;
+        }
+        game.start();
+    }
 })
 document.getElementById("stop-button").addEventListener("click", function(){
     game.end();
 })
-document.getElementById("stop-button").addEventListener("click", function(){
-    game.end();
+document.getElementById("reset-button").addEventListener("click", function(){
+    game.reset();
 })
-
+document.getElementById("level-select").addEventListener("click", function(){
+    // still no idea what to put here
+})
 
 var highScore = 0;
 var direct = "";
-var game = new Game({ctx:context, tick:100});
+var game = new Game({
+    ctx:context, 
+    tick:100
+});
 console.log(game)
