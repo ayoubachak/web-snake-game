@@ -72,7 +72,7 @@ export class Game{
     }
     start(){
         this.gameRunning = true;
-        // this.timer();
+        this.timer();
         this.tick();
     }
     end(){
