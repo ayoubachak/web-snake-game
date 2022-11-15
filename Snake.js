@@ -71,9 +71,7 @@ export class Snake{
                 break;
         }
         let newBody = [...this.body]
-        let daba = Date.now();
         newBody.unshift(newHead)
-        console.log(Date.now() - daba);
         if(removeTail){
             newBody.pop()
         }

@@ -10,7 +10,6 @@ context = canvas.getContext('2d');
 document.addEventListener("keydown",direction);
 function direction(event){
     let key = event.keyCode;
-    console.log(key);
     if( (key == 37 || key == 65) && direct != "RIGHT"){
         direct = "LEFT";
     }else if( ( key == 38 || key == 87) && direct != "DOWN"){
@@ -21,7 +20,6 @@ function direction(event){
         direct = "DOWN";
     }
     game.snake.direct = direct;
-    console.log(direct);
 }
 document.getElementById("start-button").addEventListener("click", function(){
     if(!game.gameRunning){

@@ -9,7 +9,6 @@ export class Map{
             this.border = border;
         }
         this.rectangles = rectangles?rectangles:[];
-        console.log("border is ", border!=undefined, border, this.border);
         this.borderColor = borderColor?borderColor:"#002026";
         this.backgroundColor = background?background:"#05D9FF";
         this.cellWidth = cellWidth?cellWidth:10;

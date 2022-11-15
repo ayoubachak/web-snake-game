@@ -18,15 +18,14 @@ function checkColision(point, rect){
     return false;
 }
 function addScore(){
-    let score = parseInt(document.getElementById("score").innerText);
-    
+    let score = parseInt(document.getElementById("score").innerHTML);
     score+=1;
-    document.getElementById("score").innerHTML = `${score}`;
-    let high_score = parseInt(document.getElementById("high-score").innerText);
+    document.getElementById("score").innerHTML = score;
+    let high_score = parseInt(document.getElementById("high-score").innerHTML);
     if (score > high_score){
         high_score = score;
     }
-    document.getElementById("high-score").innerHTML = `${high_score}`;
+    document.getElementById("high-score").innerHTML = high_score;
 }
 
 export class Game{
@@ -65,7 +64,6 @@ export class Game{
             var map = this.map;
             var food = this.food;
             var snakeHead = snake.getHead();
-            
             // this will check if the snake had eaten an apple
             if (snakeHead.x == food.x && snakeHead.y == food.y){
                 addScore();
