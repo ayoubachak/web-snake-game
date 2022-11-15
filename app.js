@@ -1,7 +1,6 @@
 import { Snake } from "./Snake.js";
 import { Map } from "./Map.js";
-import { Level } from "./Level.js";
-import {Game } from "./Game.js";
+import { Game } from "./Game.js";
 
 
 var canvas = document.getElementById('thegame'),
@@ -47,7 +46,14 @@ document.getElementById("start-button").addEventListener("click", function(){
                     ctx:context, 
                     tick:gameTick,
                     blockSize:blockSize,
-                    map:Maps[0]
+                    map:new Map({
+                        ctx:context,
+                        name:"Test",
+                        rectangles:rectangles1,
+                        border:true,
+                        cellHeight:blockSize,
+                        cellWidth:blockSize,
+                    })
                 })
             default:
                 break;
@@ -56,11 +62,33 @@ document.getElementById("start-button").addEventListener("click", function(){
     }
 })
 document.getElementById("stop-button").addEventListener("click", function(){
-    game.end();
+    game.stop();
+    document.getElementById("continue-button").style.display = "block";
+    this.style.display = "none";
+})
+document.getElementById("continue-button").addEventListener("click", function(){
+    game.resume();
+    document.getElementById("stop-button").style.display = "block";
+    this.style.display = "none";
 })
 document.getElementById("reset-button").addEventListener("click", function(){
     game.reset();
 })
+document.getElementById("block-size").addEventListener("change",function(){
+    let value = parseInt(this.value);
+    console.log(value)
+    blockSize = value*10;
+    game.blockSize = value;
+
+})
+document.getElementById("game-tick").addEventListener("change",function(){
+    let value = parseInt(this.value);
+    console.log(value)
+    gameTick = value;
+    game.gameTick = value;
+
+})
+
 document.getElementById("level-select").addEventListener("click", function(){
     // still no idea what to put here
 })
@@ -80,19 +108,9 @@ var rectangles1 = [
     }
 ];
 
-var Maps =[
-    new Map({
-        ctx:context,
-        name:"Test",
-        rectangles:rectangles1,
-        border:true,
-        cellHeight:blockSize,
-        cellWidth:blockSize
-    })
-]
 
 var highScore = 0;
-var blockSize = 20;
+var blockSize = 10;
 var gameTick = 100;
 var direct = "";
 var game = new Game({
@@ -100,4 +118,5 @@ var game = new Game({
     tick:gameTick,
     blockSize:blockSize
 });
+
 console.log(game)

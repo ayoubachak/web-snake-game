@@ -1,4 +1,3 @@
-import { Level } from "./Level.js";
 import { SnakeCell } from "./SnakeCell.js";
 
 export class Snake{
@@ -11,7 +10,6 @@ export class Snake{
         this.x = x?x:0;
         this.y = y?y:0;
         this.direct = direct?direct:"UP";
-        console.log(this);
         this.body = [
             new SnakeCell(this.x,this.y, this.cellWidth, this.cellHeight, this.color, this.ctx), 
             

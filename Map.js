@@ -2,6 +2,7 @@ export class Map{
     constructor(args){
         let { ctx, name, border , rectangles, borderColor, cellWidth, cellHeight, background} = args;
         this.name = name;
+        console.log(name);
         this.ctx = ctx;
         // setting the border (I know this method is bad but hang with me)
         this.border = true;
@@ -13,13 +14,14 @@ export class Map{
         this.backgroundColor = background?background:"#05D9FF";
         
         this.cellWidth =10;
-        if(cellWidth !== undefined){
+        if(cellWidth != undefined){
             this.cellWidth = cellWidth;
         }
         this.cellHeight = 10;
-        if(cellHeight !== undefined){
+        if(cellHeight != undefined){
             this.cellHeight = cellHeight;
         }
+        console.log(this.cellHeight, this.cellWidth)
         
         // render the map after the settings
         // this.render();
@@ -34,7 +36,6 @@ export class Map{
             let rect = this.rectangles[i];
             this.ctx.fillStyle = this.borderColor;
             this.ctx.fillRect(rect.x*this.cellWidth, rect.y*this.cellHeight, rect.w * this.cellWidth, rect.h * this.cellHeight);
-            console.log(this.cellHeight)
         }
         if(this.border){
             this.ctx.lineWidth = this.cellHeight;

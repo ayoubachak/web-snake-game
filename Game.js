@@ -17,10 +17,58 @@ function checkColision(point, rect){
         return true;
     return false;
 }
-function getCleanCoords(game){
+function getFoodCleanCoords(game){
     let snake = game.snake;
     let map = game.map;
-    
+    let coords = {
+        x:getRandomInt(1, game.width / game.blockSize-1),
+        y:getRandomInt(1, game.height / game.blockSize-1)
+    }
+    // check if they colide with the snake
+    let snakeBody = snake.body;
+    for (let i = 0; i <snakeBody.length; i++){
+        let snakeCell =snakeBody[i];
+        if(coords.x == snakeCell.x && coords.y == snakeCell.y){
+            console.log("I'm blind")
+            return getFoodCleanCoords(game);
+        }
+    }
+
+    // check if they colide with the map
+    let colision = false;
+    for (var i = 0; i <map.rectangles.length; i++){
+        let rect = map.rectangles[i];
+        colision = checkColision(
+            {x:coords.x, y:coords.y},
+            rect
+            )
+        if (colision){
+            return getFoodCleanCoords(game);
+        }
+    }
+    // no need to check the border because we already generate a random number from 1
+    return coords;
+}
+function getSnakeCleanCoords(game) {
+    let map = game.map;
+    let coords = {
+        x:getRandomInt(1, game.width / game.blockSize-1),
+        y:getRandomInt(1, game.height / game.blockSize-1)
+    }
+
+    // check if they colide with the map
+    let colision = false;
+    for (var i = 0; i <map.rectangles.length; i++){
+        let rect = map.rectangles[i];
+        colision = checkColision(
+            {x:coords.x, y:coords.y},
+            rect
+            )
+        if (colision){
+            return getSnakeCleanCoords(game);
+        }
+    }
+    return coords;
 }
 
 export class Game{
@@ -35,16 +83,6 @@ export class Game{
         this.width = 800;
         this.height = 600;
         this.blockSize = blockSize;
-        this.snake = new Snake({
-            ctx:this.ctx, 
-            x:getRandomInt(1, this.width/this.blockSize -1), 
-            y:getRandomInt(1, this.height/this.blockSize -1),
-            cellWidth:blockSize,
-            cellHeight:blockSize
-        });
-        if(snake != undefined){
-            this.snake = snake
-        }
         this.map = new Map({
             name:"Border",
             ctx:this.ctx, 
@@ -54,12 +92,27 @@ export class Game{
         });
         if (map != undefined){
             this.map = map
+            console.log("setting the map")
         }
-        this.food = new Food(this.ctx, getRandomInt(1, this.width/this.blockSize -1), getRandomInt(1, this.height/this.blockSize -1), this.blockSize, this.blockSize, "#D70040");
+        let snakeCoords = getSnakeCleanCoords(this);
+        this.snake = new Snake({
+            ctx:this.ctx, 
+            x:snakeCoords.x, 
+            y:snakeCoords.y,
+            cellWidth:blockSize,
+            cellHeight:blockSize
+        });
+        if(snake != undefined){
+            this.snake = snake
+        }
+        let foodCoords = getFoodCleanCoords(this)
+        this.food = new Food(this.ctx, foodCoords.x, foodCoords.y, this.blockSize, this.blockSize, "#D70040");
         this.map.render();
         this.food.render();
+        this.resetMap = this.map;
     }
     tick(){
+        console.log(this.snake.getHead().x, this.snake.getHead().y)
         if(this.gameRunning){
             var snake  = this.snake;
             var map = this.map;
@@ -69,7 +122,8 @@ export class Game{
             if (snakeHead.x == food.x && snakeHead.y == food.y){
                 this.addScore();
                 snake.move(false);
-                this.food = new Food(this.ctx, getRandomInt(1, this.width/this.blockSize -1), getRandomInt(1, this.height/this.blockSize -1), this.blockSize, this.blockSize, "#D70040");
+                let foodCoords = getFoodCleanCoords(this)
+                this.food = new Food(this.ctx, foodCoords.x, foodCoords.y, this.blockSize, this.blockSize, "#D70040");
             }else if(this.snakeHeadCrashed()){ // check if the snake head crashed 
                 this.gameRunning = false;
             }else{
@@ -94,10 +148,10 @@ export class Game{
         let snake = this.snake;
         let map = this.map;
         let snakeHead = snake.getHead();
-        if(map.border && (snakeHead.x == 0 || snakeHead.x == this.width || snakeHead.y == 0 || snakeHead.y == this.height)){
+        if(map.border && (snakeHead.x == 0 || snakeHead.x == this.width/snake.cellWidth-1 || snakeHead.y == 0 || snakeHead.y == this.height/snake.cellHeight-1)){
             console.log("I'm blind")
             return true;
-        }else if (!map.border && (snakeHead.x < 0 || snakeHead.x > parseInt(this.width/snake.cellWidth) || snakeHead.y < 0 || snakeHead.y > parseInt(this.height/snake.cellHeight))){
+        }else if (!map.border && (snakeHead.x < 0 || snakeHead.x > parseInt(this.width/snake.cellWidth) || snakeHead.y < 0 || snakeHead.y > parseInt(this.height/snake.cellHeight) )){
             if(snakeHead.x < 0){
                 snakeHead.x = parseInt(this.width/snake.cellWidth);
             }if(snakeHead.x > parseInt(this.width/snake.cellWidth)){
@@ -107,6 +161,7 @@ export class Game{
             }if(snakeHead.y < 0){
                 snakeHead.y = parseInt(this.height/snake.cellHeight);
             }
+
         }
         // here we should check if the snake hit any on one of the game's rectangles
         let colision = false;
@@ -162,10 +217,16 @@ export class Game{
         this.timer();
         this.tick();
     }
-    end(){
+    stop(){
         this.gameRunning = false;
     }
+    resume(){
+        this.gameRunning = true;
+        this.timer();
+        this.tick();
+    }
     reset(){
+        this.map = this.resetMap;
         this.map.render();
         this.gameRunning = false;
         this.snake = new Snake({
