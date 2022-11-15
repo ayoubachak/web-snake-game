@@ -21,7 +21,7 @@ function direction(event){
     game.snake.direct = direct;
 }
 document.getElementById("start-button").addEventListener("click", function(){
-    if(!game.gameRunning){
+    if(!game.gameStarted ){
         let level = document.getElementById("level-select").value
         switch (level) {
             case "level1":
@@ -74,6 +74,9 @@ document.getElementById("continue-button").addEventListener("click", function(){
 document.getElementById("reset-button").addEventListener("click", function(){
     game.reset();
 })
+// document.getElementById("start-button").addEventListener("click", function(){
+//     // game.reset();
+// })
 document.getElementById("block-size").addEventListener("change",function(){
     let value = parseInt(this.value);
     console.log(value)
@@ -118,5 +121,6 @@ var game = new Game({
     tick:gameTick,
     blockSize:blockSize
 });
+
 
 console.log(game)

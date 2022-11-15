@@ -2,7 +2,6 @@ export class Map{
     constructor(args){
         let { ctx, name, border , rectangles, borderColor, cellWidth, cellHeight, background} = args;
         this.name = name;
-        console.log(name);
         this.ctx = ctx;
         // setting the border (I know this method is bad but hang with me)
         this.border = true;
@@ -21,7 +20,6 @@ export class Map{
         if(cellHeight != undefined){
             this.cellHeight = cellHeight;
         }
-        console.log(this.cellHeight, this.cellWidth)
         
         // render the map after the settings
         // this.render();

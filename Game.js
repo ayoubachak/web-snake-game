@@ -83,6 +83,7 @@ export class Game{
         this.width = 800;
         this.height = 600;
         this.blockSize = blockSize;
+        this.gameStarted = false;
         this.map = new Map({
             name:"Border",
             ctx:this.ctx, 
@@ -92,7 +93,6 @@ export class Game{
         });
         if (map != undefined){
             this.map = map
-            console.log("setting the map")
         }
         let snakeCoords = getSnakeCleanCoords(this);
         this.snake = new Snake({
@@ -112,8 +112,10 @@ export class Game{
         this.resetMap = this.map;
     }
     tick(){
-        console.log(this.snake.getHead().x, this.snake.getHead().y)
         if(this.gameRunning){
+            // rendering the game
+            this.render();
+
             var snake  = this.snake;
             var map = this.map;
             var food = this.food;
@@ -126,12 +128,11 @@ export class Game{
                 this.food = new Food(this.ctx, foodCoords.x, foodCoords.y, this.blockSize, this.blockSize, "#D70040");
             }else if(this.snakeHeadCrashed()){ // check if the snake head crashed 
                 this.gameRunning = false;
+                this.renderLost();
             }else{
                 snake.move(true);
             }
 
-            // rendering the game
-            this.render();
             var that = this;
             let handler = function(){
                 that.tick()
@@ -213,12 +214,40 @@ export class Game{
         document.getElementById("score").innerHTML = this.score;
     }
     start(){
+        this.gameStarted = true;
         this.gameRunning = true;
+        console.log("Game started")
         this.timer();
         this.tick();
     }
     stop(){
         this.gameRunning = false;
+        // rendring the paused status
+        this.renderPaused()
+    }
+    renderPaused(){
+        this.ctx.fillStyle = "#fff";
+        this.ctx.font = '20px sans-serif'
+        this.ctx.textBaseline = 'middle';
+        this.ctx.textAlign = "center";
+        var paused  = "Paused",
+            pausedWidth = this.ctx.measureText(paused).width;
+        this.ctx.fillText(paused, (this.ctx.canvas.width/2) - (pausedWidth / 2), 400)        
+    }
+    renderLost(){
+        // rendring text in the canvas
+        this.ctx.fillStyle = "#fff";
+        this.ctx.font = '20px sans-serif'
+        this.ctx.textBaseline = 'middle';
+        this.ctx.textAlign = "center";
+        var youlost  = "You Lost",
+            youlostWidth = this.ctx.measureText(youlost).width;
+        this.ctx.fillText(youlost, (this.ctx.canvas.width/2) - (youlostWidth / 2), 400)
+        console.log("you lost")
+
+        // tweaking the buttons
+        // document.getElementById("start-button").innerHTML = "Start Again";
+        document.getElementById("stop-button").disabled = true;
     }
     resume(){
         this.gameRunning = true;
@@ -226,6 +255,8 @@ export class Game{
         this.tick();
     }
     reset(){
+        this.gameStarted = false;
+
         this.map = this.resetMap;
         this.map.render();
         this.gameRunning = false;
