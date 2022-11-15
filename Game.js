@@ -17,23 +17,15 @@ function checkColision(point, rect){
         return true;
     return false;
 }
-function addScore(){
-    let score = parseInt(document.getElementById("score").innerHTML);
-    score+=1;
-    document.getElementById("score").innerHTML = score;
-    let high_score = parseInt(document.getElementById("high-score").innerHTML);
-    if (score > high_score){
-        high_score = score;
-    }
-    document.getElementById("high-score").innerHTML = high_score;
-}
+
 
 export class Game{
     constructor(args){
-        let { ctx, tick, map, snake } = args;
+        let { ctx, tick, map, snake, blockSize } = args;
         this.time = 0;
         this.gameTick = tick?tick:100; // milliseconds
         this.score = 0;
+        this.resetScore();
         this.gameRunning = false;
         this.ctx = ctx;
         this.width = 800;
@@ -41,7 +33,9 @@ export class Game{
         this.snake = new Snake({
             ctx:this.ctx, 
             x:getRandomInt(50, 10), 
-            y:getRandomInt(50, 10)
+            y:getRandomInt(50, 10),
+            cellWidth:blockSize,
+            cellHeight:blockSize
         });
         if(snake != undefined){
             this.snake = snake
@@ -49,7 +43,9 @@ export class Game{
         this.map = new Map({
             name:"Border",
             ctx:this.ctx, 
-            border:false
+            border:false,
+            cellWidth:blockSize,
+            cellHeight:blockSize,
         });
         if (map != undefined){
             this.map = map
@@ -66,7 +62,7 @@ export class Game{
             var snakeHead = snake.getHead();
             // this will check if the snake had eaten an apple
             if (snakeHead.x == food.x && snakeHead.y == food.y){
-                addScore();
+                this.addScore();
                 snake.move(false);
                 this.food = new Food(this.ctx, getRandomInt(1, this.width/10 -1), getRandomInt(1, this.height/10 -1), 10, 10, "#D70040");
             }else if(this.snakeHeadCrashed()){ // check if the snake head crashed 
@@ -119,6 +115,15 @@ export class Game{
                 return true;
             }
         }
+        // check if the snake hit it self
+        let snakeBody = snake.body;
+        for (let i = 1; i <snakeBody.length; i++){
+            let snakeCell =snakeBody[i];
+            if(snakeHead.x == snakeCell.x && snakeHead.y == snakeCell.y){
+                console.log("I'm blind")
+                return true;
+            }
+        }
         return false;
     }
 
@@ -131,6 +136,21 @@ export class Game{
                 that.timer();
             }, 1000);
         }
+    }
+    addScore(){
+        this.score = parseInt(document.getElementById("score").innerHTML);
+        this.score+=1;
+        document.getElementById("score").innerHTML = this.score;
+        let high_score = parseInt(document.getElementById("high-score").innerHTML);
+        if (this.score > high_score){
+            high_score = this.score;
+        }
+        document.getElementById("high-score").innerHTML = high_score;
+        this.score +=1;
+    }
+    resetScore(){
+        this.score = 0;
+        document.getElementById("score").innerHTML = this.score;
     }
     start(){
         this.gameRunning = true;
@@ -150,4 +170,5 @@ export class Game{
         });
         this.food = new Food(this.ctx, getRandomInt(1, this.width/10 -1), getRandomInt(1, this.height/10 -1), 10, 10, "#D70040");
     }
+
 }
