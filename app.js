@@ -26,23 +26,27 @@ document.getElementById("start-button").addEventListener("click", function(){
         let level = document.getElementById("level-select").value
         switch (level) {
             case "level1":
-                game = new Game({ctx:context, tick:100});
+                game = new Game({ctx:context, tick:gameTick, blockSize:blockSize});
                 break;
             case "level2":
                 game = new Game({
                     ctx:context, 
-                    tick:100,
+                    tick:gameTick,
+                    blockSize:blockSize,
                     map:new Map({
                         name:"Border",
                         ctx:context, 
-                        border:true
+                        border:true,
+                        cellHeight:blockSize,
+                        cellWidth:blockSize
                     })
                 });
                 break;
             case "level3":
                 game= new Game({
                     ctx:context, 
-                    tick:100,
+                    tick:gameTick,
+                    blockSize:blockSize,
                     map:Maps[0]
                 })
             default:
@@ -81,14 +85,19 @@ var Maps =[
         ctx:context,
         name:"Test",
         rectangles:rectangles1,
-        border:true
+        border:true,
+        cellHeight:blockSize,
+        cellWidth:blockSize
     })
 ]
 
 var highScore = 0;
+var blockSize = 20;
+var gameTick = 100;
 var direct = "";
 var game = new Game({
     ctx:context, 
-    tick:100
+    tick:gameTick,
+    blockSize:blockSize
 });
 console.log(game)

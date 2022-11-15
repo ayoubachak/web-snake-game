@@ -7,10 +7,9 @@ export class Food{
         this.color = color;
         this.ctx = ctx;
         // render the food after the settings
-        this.render();
+        // this.render();
     }
     render(){
-        
         this.ctx.fillStyle = this.color;
         this.ctx.fillRect( this.x*this.cellHeight,  this.y*this.cellWidth, this.cellWidth, this.cellHeight);
     }

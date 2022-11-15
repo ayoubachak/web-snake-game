@@ -3,7 +3,7 @@ import { SnakeCell } from "./SnakeCell.js";
 
 export class Snake{
     constructor(args){
-        let { ctx , x, y, color, cellWidth, cellHeight , direct, len} = args;
+        let { ctx , x, y, color, cellWidth, cellHeight , direct} = args;
         this.color = color?color:"#006172";
         this.ctx = ctx;
         this.cellWidth = cellWidth?cellWidth:10;
@@ -11,6 +11,7 @@ export class Snake{
         this.x = x?x:0;
         this.y = y?y:0;
         this.direct = direct?direct:"UP";
+        console.log(this);
         this.body = [
             new SnakeCell(this.x,this.y, this.cellWidth, this.cellHeight, this.color, this.ctx), 
             

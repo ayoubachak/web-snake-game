@@ -13,11 +13,15 @@ function getRandomInt(min, max) {
 // the rect will be given like {x:0, y:0, w:1, h:1}
 function checkColision(point, rect){
     let {x, y} = point;
-    if(x >= rect.x && y >= rect.y && x <= rect.x + rect.w && y <= rect.y + rect.h)
+    if(x >= rect.x && y >= rect.y && x <= rect.x + rect.w-1 && y <= rect.y + rect.h-1)
         return true;
     return false;
 }
-
+function getCleanCoords(game){
+    let snake = game.snake;
+    let map = game.map;
+    
+}
 
 export class Game{
     constructor(args){
@@ -30,10 +34,11 @@ export class Game{
         this.ctx = ctx;
         this.width = 800;
         this.height = 600;
+        this.blockSize = blockSize;
         this.snake = new Snake({
             ctx:this.ctx, 
-            x:getRandomInt(50, 10), 
-            y:getRandomInt(50, 10),
+            x:getRandomInt(1, this.width/this.blockSize -1), 
+            y:getRandomInt(1, this.height/this.blockSize -1),
             cellWidth:blockSize,
             cellHeight:blockSize
         });
@@ -50,7 +55,7 @@ export class Game{
         if (map != undefined){
             this.map = map
         }
-        this.food = new Food(this.ctx, getRandomInt(1, this.width/10 -1), getRandomInt(1, this.height/10 -1), 10, 10, "#D70040");
+        this.food = new Food(this.ctx, getRandomInt(1, this.width/this.blockSize -1), getRandomInt(1, this.height/this.blockSize -1), this.blockSize, this.blockSize, "#D70040");
         this.map.render();
         this.food.render();
     }
@@ -64,7 +69,7 @@ export class Game{
             if (snakeHead.x == food.x && snakeHead.y == food.y){
                 this.addScore();
                 snake.move(false);
-                this.food = new Food(this.ctx, getRandomInt(1, this.width/10 -1), getRandomInt(1, this.height/10 -1), 10, 10, "#D70040");
+                this.food = new Food(this.ctx, getRandomInt(1, this.width/this.blockSize -1), getRandomInt(1, this.height/this.blockSize -1), this.blockSize, this.blockSize, "#D70040");
             }else if(this.snakeHeadCrashed()){ // check if the snake head crashed 
                 this.gameRunning = false;
             }else{
@@ -165,10 +170,12 @@ export class Game{
         this.gameRunning = false;
         this.snake = new Snake({
             ctx:this.ctx, 
-            x:getRandomInt(50, 10), 
-            y:getRandomInt(50, 10)
+            x:getRandomInt(1, this.width/this.blockSize -1), 
+            y:getRandomInt(1, this.height/this.blockSize -1),
+            cellWidth:this.blockSize,
+            cellHeight:this.blockSize
         });
-        this.food = new Food(this.ctx, getRandomInt(1, this.width/10 -1), getRandomInt(1, this.height/10 -1), 10, 10, "#D70040");
+        this.food = new Food(this.ctx, getRandomInt(1, this.width/this.blockSize -1), getRandomInt(1, this.height/this.blockSize -1), this.blockSize, this.blockSize, "#D70040");
     }
 
 }
