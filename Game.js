@@ -248,6 +248,9 @@ export class Game{
         // tweaking the buttons
         // document.getElementById("start-button").innerHTML = "Start Again";
         document.getElementById("stop-button").disabled = true;
+        // rendering restart
+        document.getElementById("start-button").style.display = "none";
+        document.getElementById("restart-button").style.display = "block";
     }
     resume(){
         this.gameRunning = true;

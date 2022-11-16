@@ -68,7 +68,7 @@ document.getElementById("start-button").addEventListener("click", function(){
                     map:new Map({
                         ctx:context,
                         name:"Test",
-                        rectangles:rectangles1,
+                        rectangles:level3rects,
                         border:true,
                         cellHeight:blockSize,
                         cellWidth:blockSize,
@@ -92,16 +92,29 @@ document.getElementById("continue-button").addEventListener("click", function(){
 })
 document.getElementById("reset-button").addEventListener("click", function(){
     game.reset();
+    document.getElementById("stop-button").style.display = "block";
+    document.getElementById("continue-button").style.display = "none";
 })
+document.getElementById("restart-button").addEventListener("click", function(e) {
+    document.getElementById("reset-button").click();
+    document.getElementById("start-button").click();
+    document.getElementById("stop-button").disabled = false;
+})
+
 
 // document.getElementById("start-button").addEventListener("click", function(){
 //     // game.reset();
 // })
 document.getElementById("block-size").addEventListener("change",function(){
     let value = parseInt(this.value);
-    console.log(value)
+    if(value > 2){
+        showWarnings();
+    }else{
+        hideWarnings();
+    }
     blockSize = value*10;
     game.blockSize = value;
+    
 
 })
 document.getElementById("game-tick").addEventListener("change",function(){
@@ -112,11 +125,21 @@ document.getElementById("game-tick").addEventListener("change",function(){
 
 })
 
+
 document.getElementById("level-select").addEventListener("click", function(){
     // still no idea what to put here
 })
 
-var rectangles1 = [
+
+function showWarnings(){
+    document.querySelector(".warning").style.display = "block";
+}
+function hideWarnings(){
+    document.querySelector(".warning").style.display = "none";
+}
+
+
+var level3rects = [
     {
         x:3,
         y:3,
@@ -129,6 +152,9 @@ var rectangles1 = [
         w:1,
         h:10
     }
+];
+var level4rects = [
+
 ];
 
 
